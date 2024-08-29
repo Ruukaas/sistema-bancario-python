@@ -24,9 +24,22 @@ while(True):
                        extrato.append(f"Depósito: {valor:.2f}")
                        print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
                 else:
-                       print("Operação não realizada. O valor informado é inválido.")
+                       print("Operação não realizada. O valor informado é inválido.\n")
         elif(opcao == 2):
-                print("Sacar")
+                valor = float(input("Insira o valor do saque: ")) 
+                if(numero_saques >= LIMITE_SAQUES): 
+                        print("Operação não realizada. Limite de saques atingido.\n") 
+                elif(valor > limite): 
+                        print("Operação não realizada. Limite de valor de saque atingido.\n") 
+                elif(valor > saldo):
+                        print("Operação não realizada. Valor maior que saldo disponível")
+                elif(valor > 0): 
+                        saldo -= valor
+                        numero_saques+=1
+                        extrato.append(f"Saque: {valor:.2f}")
+                        print(f"Saque no valor de R$ {valor:.2f} realizado com sucesso\n")
+                else:
+                        print("Operação não realizada. Insira um valor válido\n")
         elif(opcao == 3):
                 print("Extrato")
         elif(opcao == 0):
