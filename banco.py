@@ -41,7 +41,15 @@ while(True):
                 else:
                         print("Operação não realizada. Insira um valor válido\n")
         elif(opcao == 3):
-                print("Extrato")
+                if(len(extrato) == 0):
+                        print("Não foram realizadas movimentações")
+                else:
+                        print("########## - Extrato - ###############")
+                        for indice, entrada in enumerate(extrato):
+                                print(f"Entrada {indice+1}: {entrada}")      
+                        print(f"\nSaldo atual: R$ {saldo:.2f}")
+                        print("######################################")
+                print() 
         elif(opcao == 0):
                 print("Até logo.")
                 break
