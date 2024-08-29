@@ -9,15 +9,22 @@ boas_vindas = "Bem vindo ao seu sistema bancário!"
 
 saldo = 0
 limite = 500
-extrato = ""
+extrato = []
 numero_saques = 0
 LIMITE_SAQUES = 3
 
 print(boas_vindas)
 while(True):
         opcao = int(input(menu))
+
         if(opcao == 1):
-                print("Depósito")
+                valor = float(input("Insira o valor desejado para depositar:"))
+                if(valor > 0):
+                       saldo += valor
+                       extrato.append(f"Depósito: {valor:.2f}")
+                       print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
+                else:
+                       print("Operação não realizada. O valor informado é inválido.")
         elif(opcao == 2):
                 print("Sacar")
         elif(opcao == 3):
