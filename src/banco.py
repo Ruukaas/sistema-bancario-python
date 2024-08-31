@@ -21,7 +21,7 @@ while(True):
                 valor = float(input("Insira o valor desejado para depositar:"))
                 if(valor > 0):
                        saldo += valor
-                       extrato.append(f"Depósito: {valor:.2f}")
+                       extrato.append(f"Depósito: R$ {valor:.2f}")
                        print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
                 else:
                        print("Operação não realizada. O valor informado é inválido.\n")
@@ -36,7 +36,7 @@ while(True):
                 elif(valor > 0): 
                         saldo -= valor
                         numero_saques+=1
-                        extrato.append(f"Saque: {valor:.2f}")
+                        extrato.append(f"Saque: R$ {valor:.2f}")
                         print(f"Saque no valor de R$ {valor:.2f} realizado com sucesso\n")
                 else:
                         print("Operação não realizada. Insira um valor válido\n")
