@@ -7,6 +7,7 @@ def menu():
 [2] Sacar
 [3] Extrato
 [4] Cadastrar novo usuário
+[5] Criar uma nova conta
 [0] Sair
 -->"""
         return int(input(menu))
@@ -45,7 +46,7 @@ def sacar(*,saldo, valor, extrato, limite, numero_saques, limite_saques):
                 print("Operação não realizada. Insira um valor válido\n")
                 return None, None, None
         
-def exibir_extrato(saldo,usuarios,/,*,extrato):
+def exibir_extrato(saldo,/,*,extrato):
         if(len(extrato) == 0):
                 print("Não foram realizadas movimentações")
         else:
@@ -86,6 +87,7 @@ def validar_endereço(endereço):
                         return False
         except ValueError:
                 return False
+        
 def criar_entrada_usuario(cpf):
         nome = input("Informe o nome completo: ")
         
@@ -120,7 +122,22 @@ def criar_usuario(usuarios):
         if(usuario): #Se ele conseguiu criar o usuário com sucesso
                 usuarios.append(usuario)
                 print(f"Usuário {usuario["nome"]} com o CPF {cpf} foi criado com sucesso.\n")
-      
+                
+def criar_conta(agencia, numero_conta, usuarios,contas):
+        cpf = input("Informe o CPF(somente números, 11 digitos): ")
+        cpf_valido = validar_cpf(cpf)
+        if(not cpf_valido):
+                print("Operação não realizada. CPF inválido")
+                return
+        
+        usuario = filtrar_usuario(cpf, usuarios)
+        if(usuario): #Se existir um usuário com esse CPF cadastrado para que possamos cadastrar a conta
+                conta = {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
+                contas.append(conta)
+                print(f"Conta {numero_conta} na Agência {agencia} criada com sucesso.")
+        else:
+                print("Operação não realizada. Nenhum usuário encontrado com esse CPF")
+                
 def main():
         boas_vindas = "Bem vindo ao seu sistema bancário!"
         
@@ -130,6 +147,9 @@ def main():
         numero_saques = 0
         LIMITE_SAQUES = 3
         usuarios = []
+        contas = []
+        numero_conta_sequencial = 1 #Começa com 1 e vai incrementando
+        AGENCIA = "0001"
         
         print(boas_vindas)
         
@@ -155,9 +175,12 @@ def main():
                                 extrato = extrato_atual_saque
                                 numero_saques = numero_saques_atual_saque
                 elif(opcao == 3):
-                        exibir_extrato(saldo,usuarios, extrato = extrato)
+                        exibir_extrato(saldo, extrato = extrato)
                 elif(opcao == 4):
                         criar_usuario(usuarios)
+                elif(opcao == 5):
+                        criar_conta(AGENCIA, numero_conta_sequencial, usuarios,contas)
+                        numero_conta_sequencial+=1
                 elif(opcao == 0):
                         print("Até logo.")
                         break
