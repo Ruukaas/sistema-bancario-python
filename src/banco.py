@@ -40,6 +40,17 @@ def sacar(*,saldo, valor, extrato, limite, numero_saques, limite_saques):
         else:
                 print("Operação não realizada. Insira um valor válido\n")
                 return None, None, None
+        
+def exibir_extrato(saldo,/,*,extrato):
+        if(len(extrato) == 0):
+                print("Não foram realizadas movimentações")
+        else:
+                print("########## - Extrato - ###############")
+                for indice, entrada in enumerate(extrato):
+                        print(f"Entrada {indice+1}: {entrada}")      
+                print(f"\nSaldo atual: R$ {saldo:.2f}")
+                print("######################################")
+                print() 
                 
 def main():
         boas_vindas = "Bem vindo ao seu sistema bancário!"
@@ -74,15 +85,7 @@ def main():
                                 extrato = extrato_atual_saque
                                 numero_saques = numero_saques_atual_saque
                 elif(opcao == 3):
-                        if(len(extrato) == 0):
-                                print("Não foram realizadas movimentações")
-                        else:
-                                print("########## - Extrato - ###############")
-                                for indice, entrada in enumerate(extrato):
-                                        print(f"Entrada {indice+1}: {entrada}")      
-                                print(f"\nSaldo atual: R$ {saldo:.2f}")
-                                print("######################################")
-                        print() 
+                        exibir_extrato(saldo, extrato = extrato)
                 elif(opcao == 0):
                         print("Até logo.")
                         break
