@@ -7,6 +7,16 @@ def menu():
 -->"""
         return int(input(menu))
 
+def depositar(saldo, valor, extrato, /):
+        if(valor > 0):
+                saldo += valor
+                extrato.append(f"Depósito: R$ {valor:.2f}")
+                print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
+                return saldo, extrato
+        else:
+                print("Operação não realizada. O valor informado é inválido.\n")
+                return None, None
+
 def main():
         boas_vindas = "Bem vindo ao seu sistema bancário!"
         
@@ -15,6 +25,7 @@ def main():
         extrato = []
         numero_saques = 0
         LIMITE_SAQUES = 3
+        
         print(boas_vindas)
         
         while(True):
@@ -22,12 +33,10 @@ def main():
 
                 if(opcao == 1):
                         valor = float(input("Insira o valor desejado para depositar:"))
-                        if(valor > 0):
-                                saldo += valor
-                                extrato.append(f"Depósito: R$ {valor:.2f}")
-                                print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
-                        else:
-                                print("Operação não realizada. O valor informado é inválido.\n")
+                        saldo_atual, extrato_atual = depositar(saldo, valor, extrato) #Para não substituir o 0 inicial pelo None do return caso o valor seja menor que 0
+                        if(saldo_atual and extrato_atual): #Se não retornou None atualiza o saldo e o extrato
+                                saldo = saldo_atual
+                                extrato = extrato_atual
                 elif(opcao == 2):
                         valor = float(input("Insira o valor do saque: ")) 
                         if(numero_saques >= LIMITE_SAQUES): 
