@@ -135,6 +135,7 @@ def criar_usuario(usuarios):
                 print(f"Usuário {usuario["nome"]} com o CPF {cpf} foi criado com sucesso.\n")
                 
 def criar_conta(agencia, numero_conta, usuarios,contas):
+        conta_criada_com_sucesso = False
         cpf = input("Informe o CPF(somente números, 11 digitos): ")
         cpf_valido = validar_cpf(cpf)
         if(not cpf_valido):
@@ -146,8 +147,11 @@ def criar_conta(agencia, numero_conta, usuarios,contas):
                 conta = {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
                 contas.append(conta)
                 print(f"Conta {numero_conta} na Agência {agencia} criada com sucesso.")
+                conta_criada_com_sucesso = True
         else:
                 print("Operação não realizada. Nenhum usuário encontrado com esse CPF")
+        
+        return conta_criada_com_sucesso
                 
 def main():
         boas_vindas = "Bem vindo ao seu sistema bancário!"
@@ -190,8 +194,9 @@ def main():
                 elif(opcao == 4):
                         criar_usuario(usuarios)
                 elif(opcao == 5):
-                        criar_conta(AGENCIA, numero_conta_sequencial, usuarios,contas)
-                        numero_conta_sequencial+=1
+                        conta_criada_com_sucesso = criar_conta(AGENCIA, numero_conta_sequencial, usuarios,contas)
+                        if(conta_criada_com_sucesso):
+                                numero_conta_sequencial+=1
                 elif(opcao == 6):
                         exibir_contas(contas)
                 elif(opcao == 0):
