@@ -8,6 +8,7 @@ def menu():
 [3] Extrato
 [4] Cadastrar novo usuário
 [5] Criar uma nova conta
+[6] Listar contas cadastradas
 [0] Sair
 -->"""
         return int(input(menu))
@@ -56,7 +57,17 @@ def exibir_extrato(saldo,/,*,extrato):
                 print(f"\nSaldo atual: R$ {saldo:.2f}")
                 print("######################################")
                 print()
-                
+
+def exibir_contas(contas):
+        if(len(contas) == 0):
+                print("Não foram criadas nenhuma conta")
+        else:
+                print("########## - Contas - ###############")
+                for indice, entrada in enumerate(contas):
+                        print(f"Conta {indice+1}: {entrada}")
+                print("######################################")
+                print()
+          
 def filtrar_usuario(cpf, usuarios):
         usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
         return usuarios_filtrados[0] if usuarios_filtrados else None
@@ -181,6 +192,8 @@ def main():
                 elif(opcao == 5):
                         criar_conta(AGENCIA, numero_conta_sequencial, usuarios,contas)
                         numero_conta_sequencial+=1
+                elif(opcao == 6):
+                        exibir_contas(contas)
                 elif(opcao == 0):
                         print("Até logo.")
                         break
