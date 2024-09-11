@@ -18,6 +18,65 @@ class PessoaFisica(Cliente):
                 self.data_nascimento = data_nascimento
                 self.cpf = cpf
 
+class Conta():
+        def __init__(self, numeroConta, cliente) -> None:
+                self._saldo = 0
+                self._numeroConta = numeroConta
+                self._agencia = "0001"
+                self._cliente = cliente
+                # self._historico = Historico()
+        
+        @property
+        def saldo(self):
+                return self._saldo
+        
+        @property
+        def numeroConta(self):
+                return self._numeroConta
+        
+        @property
+        def agencia(self):
+                return self._agencia
+        
+        @property
+        def cliente(self):
+                return self._cliente
+        
+        # @property
+        # def historico(self):
+                # return self._historico
+                
+        @classmethod
+        def nova_conta(cls,numeroConta, cliente):
+                return cls(numeroConta, cliente)
+        
+        def sacar(self,valor):
+                saldo = self.saldo
+                excedeu_saldo = valor > saldo
+                saque_concluido_com_sucesso = False
+        
+                if(excedeu_saldo):
+                        print("Operação não realizada. Valor maior que saldo disponível")
+                elif(valor > 0): 
+                        self._saldo -= valor
+                        saque_concluido_com_sucesso = True
+                        print(f"Saque no valor de R$ {valor:.2f} realizado com sucesso\n")
+                else:
+                        print("Operação não realizada. Insira um valor válido\n")
+                        
+                return saque_concluido_com_sucesso
+        
+        def depositar(self,valor):
+                deposito_concluido_com_sucesso = False
+                if(valor > 0):
+                        self._saldo += valor
+                        deposito_concluido_com_sucesso = True    
+                        print(f"Depósito no valor de R$ {valor:.2f} realizado com sucesso\n")
+                else:
+                        print("Operação não realizada. O valor informado é inválido.\n")
+                
+                return deposito_concluido_com_sucesso
+                
 def menu():
         menu = """Escolha a operação desejada:
 [1] Depositar
