@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from datetime import datetime
 
 class Cliente():
@@ -24,7 +25,7 @@ class Conta():
                 self._numeroConta = numeroConta
                 self._agencia = "0001"
                 self._cliente = cliente
-                # self._historico = Historico()
+                self._historico = Historico()
         
         @property
         def saldo(self):
@@ -42,9 +43,9 @@ class Conta():
         def cliente(self):
                 return self._cliente
         
-        # @property
-        # def historico(self):
-                # return self._historico
+        @property
+        def historico(self):
+                return self._historico
                 
         @classmethod
         def nova_conta(cls,numeroConta, cliente):
@@ -77,6 +78,61 @@ class Conta():
                 
                 return deposito_concluido_com_sucesso
                 
+class Transacao(ABC):
+        @property
+        @abstractmethod
+        def valor(self):
+                pass
+        
+        @classmethod
+        @abstractmethod
+        def registrar(self, conta):
+                pass
+
+class Saque(Transacao):
+        def __init__(self, valor):
+                self._valor = valor
+
+        @property
+        def valor(self):
+                return self._valor
+
+        def registrar(self, conta):
+                sucesso_transacao = conta.sacar(self.valor)
+
+                if sucesso_transacao:
+                        conta.historico.adicionar_transacao(self)
+class Deposito(Transacao):
+        def __init__(self, valor):
+                self._valor = valor
+
+        @property
+        def valor(self):
+                return self._valor
+
+        def registrar(self, conta):
+                sucesso_transacao = conta.depositar(self.valor)
+
+                if sucesso_transacao:
+                        conta.historico.adicionar_transacao(self)
+                        
+class Historico():
+        def __init__(self):
+                self._transacoes = []
+        
+        @property
+        def transacoes(self):
+                return self._transacoes
+        
+        def adicionar_transacao(self, transacao):
+                self._transacoes.append(
+                        {
+                                "Tipo de Transação": transacao.__class__.__name__,
+                                "Valor": transacao.valor,
+                                "Data/Hora": datetime.now().strftime("%d-%m-%Y %H:%M:%s")
+                        }
+                )
+
 def menu():
         menu = """Escolha a operação desejada:
 [1] Depositar
