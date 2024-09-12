@@ -90,6 +90,7 @@ class Transacao(ABC):
                 pass
 
 class Saque(Transacao):
+        
         def __init__(self, valor):
                 self._valor = valor
 
@@ -132,6 +133,28 @@ class Historico():
                                 "Data/Hora": datetime.now().strftime("%d-%m-%Y %H:%M:%s")
                         }
                 )
+
+class ContaCorrente(Conta):
+        def __init__(self, numeroConta, cliente, limite=500, limite_saques=3):
+                super().__init__(numeroConta, cliente)
+                self.limite = limite
+                self.limite_saques = limite_saques
+        
+        def sacar(self, valor):
+                numero_saques = len([transacao for transacao in self.historico.transacoes if transacao["Tipo de Transação"] == Saque.__name__])
+                excedeu_limite_saques = numero_saques >= self.limite_saques
+                excedeu_limite_valor_saque = valor > self.limite
+                saque_concluido_com_sucesso = False
+                
+                if(excedeu_limite_saques): 
+                        print("Operação não realizada. Limite de saques atingido.\n") 
+                elif(excedeu_limite_valor_saque): 
+                        ("Operação não realizada. Limite de valor de saque atingido.\n") 
+                else:
+                        super().sacar(valor)
+                
+                return saque_concluido_com_sucesso
+
 
 def menu():
         menu = """Escolha a operação desejada:
