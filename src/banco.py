@@ -1,26 +1,8 @@
-from abc import ABC, abstractmethod
-from datetime import datetime
-
-class Cliente():
-        def __init__(self, endereco):
-                self.endereco = endereco
-                self.contas = []
-                
-        def realizar_transacao(self,conta, transacao):
-                transacao.registrar(conta)
-        
-        def adicionar_conta(self, conta):
-                self.contas.append(conta)
-
-class PessoaFisica(Cliente):
-        def __init__(self, nome, data_nascimento,cpf, endereco):
-                super().__init__(endereco)
-                self.nome = nome
-                self.data_nascimento = data_nascimento
-                self.cpf = cpf
-
+from abc import ABC, abstractmethod #@abstractclassmethod e @abstractproperty deprecated since 3.3
+from datetime import datetime, date
+from __future__ import annotations #Forward references para utilizar type hints, a partir do Python 3.7
 class Conta():
-        def __init__(self, numeroConta, cliente) -> None:
+        def __init__(self, numeroConta: int, cliente: Cliente):
                 self._saldo = 0
                 self._numeroConta = numeroConta
                 self._agencia = "0001"
@@ -48,10 +30,10 @@ class Conta():
                 return self._historico
                 
         @classmethod
-        def nova_conta(cls,numeroConta, cliente):
+        def nova_conta(cls,numeroConta: int, cliente: Cliente):
                 return cls(numeroConta, cliente)
         
-        def sacar(self,valor):
+        def sacar(self,valor: float):
                 saldo = self.saldo
                 excedeu_saldo = valor > saldo
                 saque_concluido_com_sucesso = False
@@ -67,7 +49,7 @@ class Conta():
                         
                 return saque_concluido_com_sucesso
         
-        def depositar(self,valor):
+        def depositar(self,valor: float):
                 deposito_concluido_com_sucesso = False
                 if(valor > 0):
                         self._saldo += valor
@@ -86,32 +68,49 @@ class Transacao(ABC):
         
         @classmethod
         @abstractmethod
-        def registrar(self, conta):
+        def registrar(self, conta: Conta):
                 pass
 
-class Saque(Transacao):
+class Cliente():
+        def __init__(self, endereco: str):
+                self.endereco = endereco
+                self.contas = []
+                
+        def realizar_transacao(self,conta: Conta , transacao: Transacao):
+                transacao.registrar(conta)
         
-        def __init__(self, valor):
+        def adicionar_conta(self, conta : Conta):
+                self.contas.append(conta)
+
+class PessoaFisica(Cliente):
+        def __init__(self, nome: str, data_nascimento: date, cpf: str, endereco: str):
+                super().__init__(endereco)
+                self.nome = nome
+                self.data_nascimento = data_nascimento
+                self.cpf = cpf
+
+class Saque(Transacao):
+        def __init__(self, valor: float):
                 self._valor = valor
 
         @property
         def valor(self):
                 return self._valor
 
-        def registrar(self, conta):
+        def registrar(self, conta: Conta):
                 sucesso_transacao = conta.sacar(self.valor)
 
                 if sucesso_transacao:
                         conta.historico.adicionar_transacao(self)
 class Deposito(Transacao):
-        def __init__(self, valor):
+        def __init__(self, valor: float):
                 self._valor = valor
 
         @property
         def valor(self):
                 return self._valor
 
-        def registrar(self, conta):
+        def registrar(self, conta: Conta):
                 sucesso_transacao = conta.depositar(self.valor)
 
                 if sucesso_transacao:
@@ -125,7 +124,7 @@ class Historico():
         def transacoes(self):
                 return self._transacoes
         
-        def adicionar_transacao(self, transacao):
+        def adicionar_transacao(self, transacao: Transacao):
                 self._transacoes.append(
                         {
                                 "Tipo de Transação": transacao.__class__.__name__,
@@ -135,12 +134,12 @@ class Historico():
                 )
 
 class ContaCorrente(Conta):
-        def __init__(self, numeroConta, cliente, limite=500, limite_saques=3):
+        def __init__(self, numeroConta: int, cliente: Cliente, limite: int=500 , limite_saques: int=3):
                 super().__init__(numeroConta, cliente)
                 self.limite = limite
                 self.limite_saques = limite_saques
         
-        def sacar(self, valor):
+        def sacar(self, valor:float):
                 numero_saques = len([transacao for transacao in self.historico.transacoes if transacao["Tipo de Transação"] == Saque.__name__])
                 excedeu_limite_saques = numero_saques >= self.limite_saques
                 excedeu_limite_valor_saque = valor > self.limite
