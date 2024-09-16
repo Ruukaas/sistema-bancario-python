@@ -3,7 +3,7 @@
 <div align="center"><img src="assets/Animação-v2.gif"/></div>
 
 ## Objetivo 🎯
-Aplicar o conhecimento de operadores, declaração de variáveis,estruturas condicionais e de repetição, manipulação de strings,coleções, o objeto datetime e boas práticas na linguagem Python através de um sistema de banco.
+Aplicar o conhecimento de operadores, declaração de variáveis,estruturas condicionais e de repetição, manipulação de strings,coleções, classes, o objeto datetime e boas práticas na linguagem Python através de um sistema de banco.
 
 ## Regras de Negócio 📃
 ### [V1](http://academiapme-my.sharepoint.com/:p:/g/personal/kawan_dio_me/Ef-dMEJYq9BPotZQso7LUCwBJd7gDqCC2SYlUYx0ayrGNQ?e=G79e2L) 
@@ -16,5 +16,10 @@ Aplicar o conhecimento de operadores, declaração de variáveis,estruturas cond
 - Criar duas novas funções: cadastrar usuário (cliente) e cadastrar conta bancária
   - Criar usuário (cliente): O programa deve armazenar os usuários em uma lista, um usuário é composto por: nome, data de nascimento, CPF e endereço. O endereço é uma String com o formato: logradouro - nro - bairro - cidade/sigla estado. Deve ser armazenado somente os números do CPF (sem traço e etc, e é uma String), não podemos cadastrar 2 usuários com o mesmo CPF.
   - Criar conta corrente: armazenar as contas em uma lista, a conta é composta por: agência, número da conta e usuário. O número da conta é sequencial, iniciando em 1. O número da agência é fixo: "0001". O usuário pode ter mais de uma conta, mas uma conta pertence a somente um usuário.
+---
+### V3
+- Atualizar a implementação do sistema bancário, para armazenar os dados de clientes e contas bancárias em objetos ao invés de dicionários. O código deve seguir o modelo de classes UML a seguir. Após concluir a modelagem da classes e a criação dos métodos, atualizar os métodos que tratam as opções do menu, para funcionarem com as classes modeladas
+<div align="center"><img src="assets/Trilha Python - desafio.png"/></div>
+
 ## Pré - Requisitos 📚
-- Python 3
+- Python 3.7
